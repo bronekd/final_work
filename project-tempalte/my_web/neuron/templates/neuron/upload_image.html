@@ -1,0 +1,19 @@
+<!-- neuron/templates/neuron/upload_image.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nahrát obrázek</title>
+</head>
+<body>
+    <h1>Nahrát obrázek pro klasifikaci</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Odeslat</button>
+    </form>
+    <a href="{% url 'upload_model' %}">Zpět na nahrání modelu</a>
+</body>
+</html>
