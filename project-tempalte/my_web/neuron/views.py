@@ -66,7 +66,8 @@ class ImageUploadView(FormView):
         predicted_class = np.argmax(predictions, axis=1)[0]
 
         # Uložení výsledku predikce do session
-        self.request.session['prediction_result'] = predicted_class
+        #self.request.session['prediction_result'] = predicted_class
+        self.request.session['prediction_result'] = int(predicted_class)
 
         return super().form_valid(form)
 
