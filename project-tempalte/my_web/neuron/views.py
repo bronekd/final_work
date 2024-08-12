@@ -80,3 +80,5 @@ class PredictionResultView(TemplateView):
         prediction_result = self.request.session.get('prediction_result', None)
         context['prediction_result'] = prediction_result
         return context
+
+
