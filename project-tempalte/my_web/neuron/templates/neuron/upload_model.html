@@ -7,10 +7,16 @@
 
 {% block content %}
 <h1>Nahrát model</h1>
+
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
+
+        <div class="input-group mb-3">
+        <button class="btn btn-outline-secondary" id="inputGroupFileAddon03" type="submit">Nahrát</button>
         {{ form.as_p }}
-        <button type="submit">Nahrát</button>
+        </div>
+
+
         <br>
         <a href="{% url 'upload_image' %}">Nahrát obrázek pro predikci</a>
     </form>
