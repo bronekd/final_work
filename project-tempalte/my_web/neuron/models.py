@@ -20,6 +20,7 @@ class ImagePrediction(models.Model):
     model_name = models.CharField(max_length=255)
     predicted_class = models.IntegerField()
     prediction_timestamp = models.DateTimeField(auto_now_add=True)
+    description = models.TextField(blank=True, null=True)  # Přidané pole pro popis
 
     def __str__(self):
         return f"Prediction by {self.model_name} on {self.image_file.name}"

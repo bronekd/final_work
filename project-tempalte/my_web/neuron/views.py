@@ -24,6 +24,15 @@ from .models import UserModel
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404
+from .models import UserModel, ImagePrediction
+from django.shortcuts import get_object_or_404
+from django.views.generic.edit import FormView
+from .models import UserModel, ImagePrediction
+from .forms import UploadImageForm
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing import image
+import numpy as np
 
 
 class UploadModelView(LoginRequiredMixin, FormView):
@@ -119,9 +128,8 @@ class ImageUploadView(FormView):
         return super().form_valid(form)
 """
 # neuron/views.py
-from django.shortcuts import get_object_or_404
-from .models import UserModel, ImagePrediction
 
+""" # funkční kod ale bude vylepšen níze 
 class ImageUploadView(LoginRequiredMixin, FormView):
     template_name = 'neuron/upload_image.html'
     form_class = UploadImageForm
@@ -171,7 +179,63 @@ class ImageUploadView(LoginRequiredMixin, FormView):
 
         return super().form_valid(form)
 
+"""
 
+class ImageUploadView(LoginRequiredMixin, FormView):
+    template_name = 'neuron/upload_image.html'
+    form_class = UploadImageForm
+    success_url = reverse_lazy('prediction_result')
+
+    def form_valid(self, form):
+        # Uložení nahraného obrázku a popisu
+        image_file = form.cleaned_data['image_file']
+        description = form.cleaned_data['description']
+        fs = FileSystemStorage()
+        filename = fs.save(image_file.name, image_file)
+        image_file_path = fs.path(filename)
+
+        # Načtení modelu podle ID z GET parametrů
+        model_id = self.request.GET.get('model_id')
+        if model_id:
+            model_instance = get_object_or_404(UserModel, id=model_id, user=self.request.user)
+            model_file_path = model_instance.model_file.path
+            model_name = model_instance.model_name
+        else:
+            model_file_path = self.request.session.get('model_file_path')
+            if model_file_path:
+                model_instance = UserModel.objects.filter(model_file=model_file_path).first()
+                model_name = model_instance.model_name if model_instance else "Unknown"
+            else:
+                model_name = "Unknown"
+                model_file_path = None
+
+        if model_file_path is None:
+            return self.form_invalid(form)
+
+        model = load_model(model_file_path)
+
+        # Předzpracování obrázku pro predikci
+        img = image.load_img(image_file_path, target_size=(28, 28))
+        img_array = image.img_to_array(img)
+        img_array = np.expand_dims(img_array, axis=0) / 255.0
+
+        # Spuštění predikce
+        predictions = model.predict(img_array)
+        predicted_class = np.argmax(predictions, axis=1)[0]
+
+        # Uložení výsledku predikce do databáze
+        ImagePrediction.objects.create(
+            user=self.request.user,
+            image_file=image_file,
+            model_name=model_name,
+            predicted_class=int(predicted_class),
+            description=description
+        )
+
+        # Uložení výsledku predikce do session
+        self.request.session['prediction_result'] = int(predicted_class)
+
+        return super().form_valid(form)
 
 
 # Třída pro zobrazení výsledku predikce

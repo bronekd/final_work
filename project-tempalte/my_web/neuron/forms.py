@@ -3,7 +3,7 @@
 from django import forms
 
 from django import forms
-from .models import UserModel
+from .models import UserModel, ImagePrediction
 from tensorflow.keras.models import load_model
 import os
 
@@ -39,8 +39,21 @@ class UploadModelForm(forms.Form):
         widget=forms.FileInput(attrs={'class': 'form-control', 'id':'inputGroupFile01', 'placeholder': 'Vlož model'}) # toto odkomentuj pro css boostrap
     )
 """
+""" # funkční kod ale rozšíříme jej.
 class UploadImageForm(forms.Form):
     image_file = forms.ImageField(label='Vyberte obrázek k vyhodnocení')
+"""
+class UploadImageForm(forms.ModelForm):
+    class Meta:
+        model = ImagePrediction
+        fields = ['image_file', 'description']  # Přidáno pole pro popis
+
+    def clean_description(self):
+        description = self.cleaned_data.get('description')
+        # Můžeš přidat další validace pro popis zde, pokud je to potřeba
+        return description
+
+
 
 class ModelUploadForm(forms.Form):
     model_file = forms.FileField()
