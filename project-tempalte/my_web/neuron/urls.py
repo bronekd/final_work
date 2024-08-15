@@ -1,7 +1,7 @@
 # neuron/urls.py
 
 from django.urls import path
-from .views import UploadModelView, UploadSuccessView, ImageUploadView, PredictionResultView, UserModelListView
+from .views import UploadModelView, UploadSuccessView, ImageUploadView, PredictionResultView, UserModelListView, ImagePredictionListView
 
 urlpatterns = [
     path('upload/', UploadModelView.as_view(), name='upload_model'),
@@ -9,4 +9,5 @@ urlpatterns = [
     path('upload/image/', ImageUploadView.as_view(), name='upload_image'),
     path('upload/prediction/', PredictionResultView.as_view(), name='prediction_result'),
     path('models/', UserModelListView.as_view(), name='user_models'),
+    path('predictions/', ImagePredictionListView.as_view(), name='image_predictions'),
 ]

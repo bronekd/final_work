@@ -23,6 +23,7 @@ from .forms import UploadModelForm, UploadImageForm
 from .models import UserModel
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
+from django.core.paginator import Paginator
 
 
 class UploadModelView(LoginRequiredMixin, FormView):
@@ -118,6 +119,9 @@ class ImageUploadView(FormView):
         return super().form_valid(form)
 """
 # neuron/views.py
+from django.shortcuts import get_object_or_404
+from .models import UserModel, ImagePrediction
+
 class ImageUploadView(LoginRequiredMixin, FormView):
     template_name = 'neuron/upload_image.html'
     form_class = UploadImageForm
@@ -133,10 +137,12 @@ class ImageUploadView(LoginRequiredMixin, FormView):
         # Načtení modelu podle ID z GET parametrů nebo session
         model_id = self.request.GET.get('model_id')
         if model_id:
-            model_instance = UserModel.objects.get(id=model_id, user=self.request.user)
+            model_instance = get_object_or_404(UserModel, id=model_id, user=self.request.user)
             model_file_path = model_instance.model_file.path
+            model_name = model_instance.model_name
         else:
             model_file_path = self.request.session.get('model_file_path')
+            model_name = "Unknown"
 
         if model_file_path is None:
             return self.form_invalid(form)
@@ -152,10 +158,19 @@ class ImageUploadView(LoginRequiredMixin, FormView):
         predictions = model.predict(img_array)
         predicted_class = np.argmax(predictions, axis=1)[0]
 
+        # Uložení výsledku predikce do databáze
+        ImagePrediction.objects.create(
+            user=self.request.user,
+            image_file=image_file,
+            model_name=model_name,
+            predicted_class=int(predicted_class)
+        )
+
         # Uložení výsledku predikce do session
         self.request.session['prediction_result'] = int(predicted_class)
 
         return super().form_valid(form)
+
 
 
 
@@ -170,3 +185,14 @@ class PredictionResultView(TemplateView):
         return context
 
 
+# neuron/views.py
+
+
+class ImagePredictionListView(LoginRequiredMixin, ListView):
+    model = ImagePrediction
+    template_name = 'neuron/image_predictions.html'
+    context_object_name = 'predictions'
+    paginate_by = 10  # Počet položek na stránku
+
+    def get_queryset(self):
+        return ImagePrediction.objects.filter(user=self.request.user).order_by('-prediction_timestamp')
