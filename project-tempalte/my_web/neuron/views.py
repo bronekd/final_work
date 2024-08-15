@@ -12,7 +12,48 @@ from tensorflow.keras.preprocessing import image
 from .forms import UploadModelForm, UploadImageForm
 from django.views.generic.base import TemplateView
 
+# neuron/views.py
+from django.views.generic.edit import FormView
+from django.core.files.storage import FileSystemStorage
+from django.urls import reverse_lazy
+from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
+from tensorflow.keras.models import load_model
+from .forms import UploadModelForm, UploadImageForm
+from .models import UserModel
+from django.views.generic.base import TemplateView
+from django.views.generic.list import ListView
 
+
+class UploadModelView(LoginRequiredMixin, FormView):
+    template_name = 'neuron/upload_model.html'
+    form_class = UploadModelForm
+    success_url = reverse_lazy('upload_success')
+
+    def form_valid(self, form):
+        # Uložení modelu do databáze
+        model_instance = form.save(commit=False)
+        model_instance.user = self.request.user
+        model_instance.model_name = form.cleaned_data['model_file'].name
+        model_instance.save()
+
+        # Uložení cesty k modelu do session
+        self.request.session['model_file_path'] = model_instance.model_file.path
+
+        return super().form_valid(form)
+
+class UserModelListView(LoginRequiredMixin, ListView):
+    model = UserModel
+    template_name = 'neuron/user_models.html'
+    context_object_name = 'user_models'
+
+    def get_queryset(self):
+        return UserModel.objects.filter(user=self.request.user)
+
+
+
+
+""" Stará funkční class
 class UploadModelView(FormView):
     template_name = 'neuron/upload_model.html'
     form_class = UploadModelForm
@@ -33,10 +74,15 @@ class UploadModelView(FormView):
 
         return super().form_valid(form)
 
+"""
+
 class UploadSuccessView(TemplateView):
     template_name = 'neuron/upload_success.html'
 
-# Třída pro nahrání obrázku a spuštění predikce
+
+
+"""
+# Třída pro nahrání obrázku a spuštění predikce stará a funkční
 class ImageUploadView(FormView):
     template_name = 'neuron/upload_image.html'
     form_class = UploadImageForm
@@ -70,6 +116,48 @@ class ImageUploadView(FormView):
         self.request.session['prediction_result'] = int(predicted_class)
 
         return super().form_valid(form)
+"""
+# neuron/views.py
+class ImageUploadView(LoginRequiredMixin, FormView):
+    template_name = 'neuron/upload_image.html'
+    form_class = UploadImageForm
+    success_url = reverse_lazy('prediction_result')
+
+    def form_valid(self, form):
+        # Uložení nahraného obrázku
+        image_file = form.cleaned_data['image_file']
+        fs = FileSystemStorage()
+        filename = fs.save(image_file.name, image_file)
+        image_file_path = fs.path(filename)
+
+        # Načtení modelu podle ID z GET parametrů nebo session
+        model_id = self.request.GET.get('model_id')
+        if model_id:
+            model_instance = UserModel.objects.get(id=model_id, user=self.request.user)
+            model_file_path = model_instance.model_file.path
+        else:
+            model_file_path = self.request.session.get('model_file_path')
+
+        if model_file_path is None:
+            return self.form_invalid(form)
+
+        model = load_model(model_file_path)
+
+        # Předzpracování obrázku pro predikci
+        img = image.load_img(image_file_path, target_size=(28, 28))
+        img_array = image.img_to_array(img)
+        img_array = np.expand_dims(img_array, axis=0) / 255.0
+
+        # Spuštění predikce
+        predictions = model.predict(img_array)
+        predicted_class = np.argmax(predictions, axis=1)[0]
+
+        # Uložení výsledku predikce do session
+        self.request.session['prediction_result'] = int(predicted_class)
+
+        return super().form_valid(form)
+
+
 
 # Třída pro zobrazení výsledku predikce
 class PredictionResultView(TemplateView):

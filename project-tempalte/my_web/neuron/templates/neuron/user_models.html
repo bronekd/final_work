@@ -1,0 +1,18 @@
+<!-- neuron/templates/neuron/user_models.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moje modely</title>
+</head>
+<body>
+    <h1>Moje modely</h1>
+    <ul>
+        {% for model in user_models %}
+            <li>{{ model.model_name }} - <a href="{% url 'upload_image' %}?model_id={{ model.id }}">Použít tento model</a></li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'upload_model' %}">Nahrát nový model</a>
+</body>
+</html>
