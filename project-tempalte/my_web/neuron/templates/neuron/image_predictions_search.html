@@ -40,4 +40,30 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <!-- Include jQuery and jQuery UI -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+<script>
+$(document).ready(function() {
+    $('#id_model_name').autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "{% url 'model_name_autocomplete' %}",
+                data: {
+                    'term': request.term
+                },
+                dataType: 'json',
+                success: function(data) {
+                    response(data);
+                }
+            });
+        },
+        minLength: 2, // Minimální počet znaků před začátkem našeptávání
+    });
+});
+</script>
+
 {% endblock %}

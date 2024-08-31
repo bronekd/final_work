@@ -293,4 +293,15 @@ class ImagePredictionFilterView(ListView):
         return context
 
 
+# řešení javascript
+from django.http import JsonResponse
+from .models import ImagePrediction
+
+def model_name_autocomplete(request):
+    if 'term' in request.GET:
+        qs = ImagePrediction.objects.filter(model_name__icontains=request.GET.get('term'))
+        names = list(qs.values_list('model_name', flat=True).distinct())
+        return JsonResponse(names, safe=False)
+    return JsonResponse([], safe=False)
+
 
