@@ -1,17 +1,16 @@
 <!-- neuron/templates/neuron/prediction_result.html -->
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Výsledek predikce</title>
-</head>
-<body>
+{% extends "master.html" %}
+
+{% block title %}
+    Výsledek predikce
+{% endblock %}
+
+{% block content %}
     <h1>Výsledek predikce</h1>
     <p>Predikovaná třída: {{ prediction_result }}</p>
     <a href="{% url 'upload_image' %}">Nahrát další obrázek</a>
     <a href="{% url 'upload_model' %}">Zpět na nahrání modelu</a>
-</body>
-</html>
+
+{% endblock %}
 

@@ -1,15 +1,15 @@
 <!-- neuron/templates/neuron/upload_success.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nahrání úspěšné</title>
-</head>
-<body>
+
+{% extends "master.html" %}
+
+{% block title %}
+    Nahrání úspěšné
+{% endblock %}
+
+{% block content %}
     <h1>Nahrání úspěšné</h1>
     <p>Model byl úspěšně nahrán: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
     <a href="{% url 'upload_model' %}">Nahrát další model</a>
     <a href="{% url 'upload_image' %}">Nahrát obrázek k predikci</a>
-</body>
-</html>
+
+{% endblock %}
