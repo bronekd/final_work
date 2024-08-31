@@ -1,1 +1,31 @@
-<footer>2024 &copy; Bronislav Dřímal ITSTEP Academy</footer>
+<!-- <footer>2024 &copy; Bronislav Dřímal ITSTEP Academy</footer> -->
+<footer class="bg-dark text-light py-4 mt-auto">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <h5>About NeuronNet</h5>
+        <p>NeuronNet is a platform for training and using neural networks, providing tools for both beginners and professionals to develop their AI models.</p>
+      </div>
+      <div class="col-md-3">
+        <h5>Quick Links</h5>
+        <ul class="list-unstyled">
+          <li><a href="{% url 'home' %}" class="text-light">Home</a></li>
+          <li><a href="{% url 'about' %}" class="text-light">About</a></li>
+          <li><a href="{% url 'upload_model' %}" class="text-light">Upload Model NN</a></li>
+          {% if user.is_authenticated %}
+            <li><a href="{% url 'profile' %}" class="text-light">Profile</a></li>
+            <li><a href="{% url 'logout' %}" class="text-light">Logout</a></li>
+          {% else %}
+            <li><a href="{% url 'login' %}" class="text-light">Login</a></li>
+            <li><a href="{% url 'register' %}" class="text-light">Register</a></li>
+          {% endif %}
+        </ul>
+      </div>
+      <div class="col-md-3">
+        <h5>Contact</h5>
+        <p>Email: <a href="mailto:info@neuronnnet.com" class="text-light">info@neuronnnet.com</a></p>
+        <p>© 2024 Bronislav Dřímal | ITSTEP Academy</p>
+      </div>
+    </div>
+  </div>
+</footer>

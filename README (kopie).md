@@ -14,7 +14,7 @@
 
 
 **migrations** (after change models)
-
+(myworld) ... $
 py manage.py makemigrations
 
 py manage.py migrate

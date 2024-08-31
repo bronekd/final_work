@@ -1,0 +1,42 @@
+Postup opravy:
+Reaktivujte virtuální prostředí: Zkuste znovu aktivovat vaše virtuální prostředí:
+bash
+Zkopírovat kód
+source .venv/bin/activate
+Poté zkuste znovu použít příkaz pip. Pokud to stále nefunguje, pokračujte dalšími kroky.
+Ověřte, zda máte pip nainstalovaný globálně: Ověřte, zda máte pip nainstalovaný ve svém systému mimo virtuální prostředí. Můžete to udělat příkazem:
+bash
+Zkopírovat kód
+python3 -m ensurepip --upgrade
+Tento příkaz by měl nainstalovat nebo aktualizovat pip v případě, že chybí.
+Znovu nainstalujte virtuální prostředí: Pokud problém přetrvává, může být nejlepší smazat a znovu vytvořit virtuální prostředí:
+Nejprve deaktivujte aktuální virtuální prostředí (pokud je aktivní):
+bash
+Zkopírovat kód
+deactivate
+Smažte existující .venv složku:
+bash
+Zkopírovat kód
+rm -rf .venv
+Znovu vytvořte virtuální prostředí:
+bash
+Zkopírovat kód
+python3 -m venv .venv
+Aktivujte virtuální prostředí:
+bash
+Zkopírovat kód
+source .venv/bin/activate
+Nainstalujte pip a další závislosti:
+bash
+Zkopírovat kód
+python3 -m ensurepip --upgrade
+pip install -r requirements.txt
+Ověření instalace Pythonu a pipu: Pokud ani poté pip nefunguje, může být problém v instalaci Pythonu na vašem systému. Ověřte, zda máte správně nainstalovaný Python 3, a že pip je funkční:
+Zkontrolujte verzi Pythonu:
+bash
+Zkopírovat kód
+python3 --version
+Zkontrolujte verzi pip:
+bash
+Zkopírovat kód
+python3 -m pip --version
