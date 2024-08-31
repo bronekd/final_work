@@ -305,3 +305,16 @@ def model_name_autocomplete(request):
     return JsonResponse([], safe=False)
 
 
+def description_autocomplete(request):
+    if 'term' in request.GET:
+        qs = ImagePrediction.objects.filter(description__icontains=request.GET.get('term'))
+        descriptions = list(qs.values_list('description', flat=True).distinct())
+        return JsonResponse(descriptions, safe=False)
+    return JsonResponse([], safe=False)
+
+def predicted_class_autocomplete(request):
+    if 'term' in request.GET:
+        qs = ImagePrediction.objects.filter(predicted_class__icontains=request.GET.get('term'))
+        classes = list(qs.values_list('predicted_class', flat=True).distinct())
+        return JsonResponse(classes, safe=False)
+    return JsonResponse([], safe=False)

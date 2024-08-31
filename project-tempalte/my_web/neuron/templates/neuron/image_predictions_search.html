@@ -46,6 +46,7 @@
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
+
 <script>
 $(document).ready(function() {
     $('#id_model_name').autocomplete({
@@ -61,7 +62,38 @@ $(document).ready(function() {
                 }
             });
         },
-        minLength: 2, // Minimální počet znaků před začátkem našeptávání
+        minLength: 1, // Minimální počet znaků před začátkem našeptávání
+    });
+  $('#id_description').autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "{% url 'description_autocomplete' %}",
+                data: {
+                    'term': request.term
+                },
+                dataType: 'json',
+                success: function(data) {
+                    response(data);
+                }
+            });
+        },
+        minLength: 1,
+    });
+
+    $('#id_predicted_class').autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "{% url 'predicted_class_autocomplete' %}",
+                data: {
+                    'term': request.term
+                },
+                dataType: 'json',
+                success: function(data) {
+                    response(data);
+                }
+            });
+        },
+        minLength: 1,
     });
 });
 </script>
