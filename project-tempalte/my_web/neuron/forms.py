@@ -57,3 +57,26 @@ class UploadImageForm(forms.ModelForm):
 
 class ModelUploadForm(forms.Form):
     model_file = forms.FileField()
+
+
+
+
+from django import forms
+from .models import ImagePrediction
+
+class ImagePredictionFilterForm(forms.ModelForm):
+    class Meta:
+        model = ImagePrediction
+        fields = ['model_name', 'predicted_class']
+        widgets = {
+            'model_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
+        }
+
+# neuron/forms.py
+
+class ImagePredictionFilterForm(forms.Form):
+    model_name = forms.CharField(label='Model Name', max_length=255, required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    description = forms.CharField(label='Description', max_length=255, required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    predicted_class = forms.IntegerField(label='Predicted Class', required=False, widget=forms.NumberInput(attrs={'class': 'form-control'}))
+

@@ -1,19 +1,6 @@
-from django.shortcuts import render
-
-# Create your views here.
-# neuron/views.py
-from django.views.generic.edit import FormView
-from django.core.files.storage import FileSystemStorage
-from django.urls import reverse_lazy
-from django.shortcuts import render
-import numpy as np
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing import image
-from .forms import UploadModelForm, UploadImageForm
-from django.views.generic.base import TemplateView
 
 # neuron/views.py
-from django.views.generic.edit import FormView
+
 from django.core.files.storage import FileSystemStorage
 from django.urls import reverse_lazy
 from django.shortcuts import render
@@ -33,6 +20,11 @@ from .forms import UploadImageForm
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 import numpy as np
+from .models import ImagePrediction
+from django.shortcuts import render
+from .models import ImagePrediction
+from .filters import ImagePredictionFilter
+from .models import ImagePrediction
 
 
 class UploadModelView(LoginRequiredMixin, FormView):
@@ -260,3 +252,45 @@ class ImagePredictionListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return ImagePrediction.objects.filter(user=self.request.user).order_by('-prediction_timestamp')
+
+"""#filtr pro predikci
+def prediction_list(request):
+    filter = ImagePredictionFilter(request.GET, queryset=ImagePrediction.objects.all())
+    return render(request, 'image_predictions.html', {'filter': filter})
+"""
+# neuron/views.py
+# views.py
+
+from django.views.generic import ListView
+from django.shortcuts import render
+from .models import ImagePrediction
+from .forms import ImagePredictionFilterForm
+
+class ImagePredictionFilterView(ListView):
+    model = ImagePrediction
+    template_name = 'neuron/image_predictions_search.html'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        form = ImagePredictionFilterForm(self.request.GET)
+        if form.is_valid():
+            model_name = form.cleaned_data.get('model_name')
+            predicted_class = form.cleaned_data.get('predicted_class')
+            description = form.cleaned_data.get('description')
+
+            if model_name:
+                queryset = queryset.filter(model_name__icontains=model_name)
+            if predicted_class:
+                queryset = queryset.filter(predicted_class=predicted_class)
+            if description:
+                queryset = queryset.filter(description__icontains=description)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = ImagePredictionFilterForm(self.request.GET)
+        return context
+
+
+

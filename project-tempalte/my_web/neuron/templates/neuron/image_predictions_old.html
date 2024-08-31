@@ -1,5 +1,4 @@
 {% extends "master.html" %}
-{% load widget_tweaks %}
 
 {% block title %}
     Statistiky predikcí
@@ -8,8 +7,22 @@
 {% block content %}
     <h1>Statistiky predikcí</h1>
 
+    <form method="get">
+    {{ filter.form.as_p }}
+    <button type="submit" class="btn btn-primary">Filtrovat</button>
+    </form>
 
+{% load widget_tweaks %}
 
+<form method="get">
+    {% for field in filter.form %}
+        {{ field.label_tag }}
+        {{ field|add_class:"form-control" }}
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Filtrovat</button>
+</form>
+
+    <pre>{{ filter.form|pprint }}</pre>
 
     <table class="table table-striped">
         <thead>
