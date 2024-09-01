@@ -11,6 +11,7 @@
         <ul class="list-unstyled">
           <li><a href="{% url 'home' %}" class="text-light">Home</a></li>
           <li><a href="{% url 'about' %}" class="text-light">About</a></li>
+          <li><a href="{% url 'terms_and_conditions' %}" class="text-light">Terms and Conditions</a></li>
           <li><a href="{% url 'upload_model' %}" class="text-light">Upload Model NN</a></li>
           {% if user.is_authenticated %}
             <li><a href="{% url 'profile' %}" class="text-light">Profile</a></li>
@@ -18,6 +19,7 @@
           {% else %}
             <li><a href="{% url 'login' %}" class="text-light">Login</a></li>
             <li><a href="{% url 'register' %}" class="text-light">Register</a></li>
+
           {% endif %}
         </ul>
       </div>

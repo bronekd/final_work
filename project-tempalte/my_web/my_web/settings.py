@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-^1m($x*^s%f%sp&^1@n^(o5!g2cj@63*_nzy^c6jsi#q==2mp6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['bronekd.pythonanywhere.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -124,7 +124,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+
 ]
 
 # Default primary key field type
@@ -136,7 +136,6 @@ LOGIN_REDIRECT_URL = 'profile'
 LOGIN_URL = 'login'
 
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -146,3 +145,5 @@ DJANGO_FILTERS = {
     'DEFAULT_FILTER_SET': 'django_filters.rest_framework.FilterSet',
 }
 
+
+STATIC_ROOT = BASE_DIR / 'static'  # Pokud BASE_DIR je již instance Path
