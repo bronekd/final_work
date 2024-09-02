@@ -7,22 +7,51 @@
 
 {% block content %}
 
-    <div class="container mt-5">
-        <h1 class="mb-3">O aplikaci</h1>
-        <p class="lead">Naše aplikace umožňuje uživatelům využívat pokročilé technologie strojového učení k efektivnímu zpracování a klasifikaci obrázků. Po přihlášení má každý uživatel možnost nahrát vlastní předtrénovanou neuronovou síť, což umožňuje přizpůsobit zpracování dat specifickým potřebám.</p>
+<div class="container mt-5">
+    <h1 class="mb-3">O aplikaci</h1>
+    <p class="lead">Naše aplikace umožňuje uživatelům využívat pokročilé technologie strojového učení k efektivnímu zpracování a klasifikaci obrázků. Po přihlášení má každý uživatel možnost nahrát vlastní předtrénovanou neuronovou síť, což umožňuje přizpůsobit zpracování dat specifickým potřebám.</p>
 
-        <h2 class="mt-4">Jak to funguje</h2>
-        <ol>
-            <li><strong>Nahrání modelu:</strong> Uživatelé mohou nahrát svůj předtrénovaný model neuronové sítě ve formátu, který je kompatibilní s TensorFlow/Keras. Tato funkce je ideální pro ty, kteří již mají zkušenosti s vývojem a trénováním neuronových sítí a chtějí testovat a používat své modely na různých datasetech.</li>
-            <li><strong>Klasifikace obrázků:</strong> Po nahrání modelu mohou uživatelé použít tento model k nahrání a klasifikaci obrázků. Systém zpracuje nahrávané obrázky a poskytne predikce třídy, které model identifikuje.</li>
-        </ol>
+    <h2 class="mt-4">Jak to funguje</h2>
+    <ol>
+        <li><strong>Nahrání modelu:</strong> Uživatelé mohou nahrát svůj předtrénovaný model neuronové sítě ve formátu, který je kompatibilní s TensorFlow/Keras. Tato funkce je ideální pro ty, kteří již mají zkušenosti s vývojem a trénováním neuronových sítí a chtějí testovat a používat své modely na různých datasetech.</li>
+        <li><strong>Klasifikace obrázků:</strong> Po nahrání modelu mohou uživatelé použít tento model k nahrání a klasifikaci obrázků. Systém zpracuje nahrávané obrázky a poskytne predikce třídy, které model identifikuje.</li>
+    </ol>
 
-        <h2 class="mt-4">Pro koho je aplikace určena</h2>
-        <p>Aplikace je určena pro vývojáře, výzkumníky a technologické nadšence, kteří chtějí experimentovat s neuronovými sítěmi a strojovým učením. Je také užitečná pro vzdělávací účely, kde mohou studenti a učitelé nahrávat a testovat různé modely a vizualizovat jejich výkon v reálném čase.</p>
+    <h2 class="mt-4">Pro koho je aplikace určena</h2>
+    <p>Aplikace je určena pro vývojáře, výzkumníky a technologické nadšence, kteří chtějí experimentovat s neuronovými sítěmi a strojovým učením. Je také užitečná pro vzdělávací účely, kde mohou studenti a učitelé nahrávat a testovat různé modely a vizualizovat jejich výkon v reálném čase.</p>
 
-        <h2 class="mt-4">Budoucí rozvoj</h2>
-        <p>Plánujeme rozšíření funkcionalit aplikace o další typy strojového učení a rozšíření podporovaných formátů dat, což umožní uživatelům větší flexibilitu a širší možnosti použití.</p>
+    <h2 class="mt-4">Budoucí rozvoj</h2>
+    <p>Plánujeme rozšíření funkcionalit aplikace o další typy strojového učení a rozšíření podporovaných formátů dat, což umožní uživatelům větší flexibilitu a širší možnosti použití.</p>
+
+    <h2 class="mt-4">Stažení vzorových dat</h2>
+    <p class="mb-4">Pro vaše první kroky v aplikaci jsme připravili vzorová data, která vám umožní okamžitě začít experimentovat s našimi funkcemi. Nejprve si stáhněte předtrénovaný model neuronové sítě a poté můžete vyzkoušet jeho schopnosti na vzorových obrázcích.</p>
+
+    <!-- Sekce pro stažení modelu -->
+    <div class="mb-4">
+        <h4>1. Stáhnout model neuronové sítě</h4>
+        <a href="{{ MEDIA_URL }}vzor/model_NN_vzor.h5" download="model_NN_vzor.h5" class="btn btn-primary">
+            <i class="fas fa-download"></i> Stáhnout model NN
+        </a>
     </div>
 
+    <!-- Sekce pro stažení a zobrazení obrázků -->
+    <div class="mb-4">
+        <h4>2. Stáhnout vzorové obrázky</h4>
+        <div class="row">
+            <div class="col-md-4">
+                <img src="{{ MEDIA_URL }}vzor/Kolecko_01.png" alt="Kolečko" class="img-fluid mb-2">
+                <a href="{{ MEDIA_URL }}vzor/Kolecko_01.png" download="Kolecko_01.png" class="btn btn-outline-secondary btn-block">
+                    <i class="fas fa-download"></i> Stáhnout obrázek Kolečko
+                </a>
+            </div>
+            <div class="col-md-4">
+                <img src="{{ MEDIA_URL }}vzor/Ctverecek_02.png" alt="Čtvereček" class="img-fluid mb-2">
+                <a href="{{ MEDIA_URL }}vzor/Ctverecek_02.png" download="Ctverecek_02.png" class="btn btn-outline-secondary btn-block">
+                    <i class="fas fa-download"></i> Stáhnout obrázek Čtvereček
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
