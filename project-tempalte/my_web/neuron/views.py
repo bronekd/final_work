@@ -265,10 +265,11 @@ from django.views.generic import ListView
 from django.shortcuts import render
 from .models import ImagePrediction
 from .forms import ImagePredictionFilterForm
-
+"""
 class ImagePredictionFilterView(ListView):
     model = ImagePrediction
     template_name = 'neuron/image_predictions_search.html'
+    paginate_by = 10  # Počet položek na stránku
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -285,11 +286,42 @@ class ImagePredictionFilterView(ListView):
             if description:
                 queryset = queryset.filter(description__icontains=description)
 
-        return queryset
+        return queryset.order_by('-prediction_timestamp')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = ImagePredictionFilterForm(self.request.GET)
+        return context
+"""
+# níže pokus o přidání pagination na stránku filstru
+from django.views.generic import ListView
+from .models import ImagePrediction
+from .forms import ImagePredictionFilterForm
+
+class ImagePredictionFilterView(ListView):
+    model = ImagePrediction
+    template_name = 'neuron/image_predictions_search.html'
+    paginate_by = 10  # Počet položek na stránku, který lze přizpůsobit dle potřeby
+
+    def get_queryset(self):
+        # Získání původního querysetu
+        queryset = super().get_queryset()
+        # Vytvoření instance formuláře pro filtrování s daty z GET requestu
+        form = ImagePredictionFilterForm(self.request.GET)
+        if form.is_valid():
+            # Filtrování querysetu na základě hodnot formuláře
+            if form.cleaned_data.get('model_name'):
+                queryset = queryset.filter(model_name__icontains=form.cleaned_data['model_name'])
+            if form.cleaned_data.get('predicted_class'):
+                queryset = queryset.filter(predicted_class__icontains=form.cleaned_data['predicted_class'])
+            if form.cleaned_data.get('description'):
+                queryset = queryset.filter(description__icontains=form.cleaned_data['description'])
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        # Přidání formuláře do kontextu šablony, aby bylo možné znovu zobrazit formulář
+        context = super().get_context_data(**kwargs)
+        context['form'] = ImagePredictionFilterForm(self.request.GET or None)
         return context
 
 
