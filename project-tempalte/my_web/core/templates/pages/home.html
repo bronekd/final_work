@@ -6,5 +6,30 @@
 
 
 {% block content %}
-<h1>Home Page</h1>
+    <div class="container mt-5">
+        <h1 class="mb-3">Vítejte v naší aplikaci pro strojové učení!</h1>
+        <p class="lead">Tato platforma umožňuje uživatelům nahrávat, testovat a používat předtrénované neuronové sítě pro klasifikaci obrázků a další úkoly strojového učení jsou postupně připravovány.</p>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <h2>Chcete začít?</h2>
+                <p>Začněte nahráním svého modelu neuronové sítě a testujte jeho schopnosti na skutečných datech.</p>
+                <a href="{% url 'upload_model' %}" class="btn btn-primary">Nahrát model</a>
+            </div>
+            <div class="col-md-6">
+                <h2>Již máte model?</h2>
+                <p>Pokud již máte model nahrán, můžete rovnou přistoupit k nahrávání a analýze vašich obrázků.</p>
+                <a href="{% url 'user_models' %}" class="btn btn-success">Nahrát obrázek</a>
+            </div>
+        </div>
+
+        <h2 class="mt-5">Proč používat naši aplikaci?</h2>
+        <ul>
+            <li><strong>Přizpůsobitelnost:</strong> Můžete používat vlastní modely a testovat je v našem prostředí.</li>
+            <li><strong>Uživatelsky přívětivé:</strong> Jednoduché nahrávání a rychlé zpracování obrázků.</li>
+            <li><strong>Výsledky v reálném čase:</strong> Ihned získáte výsledky a můžete je analyzovat.</li>
+        </ul>
+    </div>
+
+
 {% endblock %}

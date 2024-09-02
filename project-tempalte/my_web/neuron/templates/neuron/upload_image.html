@@ -5,13 +5,21 @@
 {% endblock %}
 
 {% block content %}
+<div class="container mt-5">
     <h1>Nahrát obrázek pro klasifikaci</h1>
+    <p class="lead">Vyberte obrázek, který chcete nahrát pro klasifikaci pomocí vybraného modelu neuronové sítě.</p>
+
     <form method="post" enctype="multipart/form-data" class="form-group">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn btn-primary">Odeslat</button>
     </form>
-    <div class="mt-3">
+
+    <div class="mt-4">
         <a href="{% url 'upload_model' %}" class="btn btn-secondary">Zpět na nahrání modelu</a>
+        <a href="{% url 'user_models' %}" class="btn btn-info">Moje modely</a>
+        <a href="{% url 'image_predictions' %}" class="btn btn-warning">Přehled predikcí</a>
+        <a href="{% url 'search_image_prediction' %}" class="btn btn-success">Pokročilé statistiky</a>
     </div>
+</div>
 {% endblock %}

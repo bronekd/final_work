@@ -2,20 +2,22 @@
 {% load widget_tweaks %}
 
 {% block title %}
-    Statistiky predikcí
+    Pokročilé statistiky predikcí
 {% endblock %}
 
 {% block content %}
-    <h1>Statistiky predikcí</h1>
-    
-    <form method="get" class="form-inline">
+<div class="container mt-5">
+    <h1>Pokročilé statistiky predikcí s filtrací</h1>
+    <p class="lead">Zde můžete filtrovat a prohlížet statistiky predikcí podle modelu, třídy, popisu a času.</p>
+
+    <form method="get" class="form-inline mb-4">
         {{ form.as_p }}
         <button type="submit" class="btn btn-primary">Filtrovat</button>
     </form>
 
     <h2>Výsledky filtrace</h2>
-    <table class="table table-striped">
-        <thead>
+    <table class="table table-hover">
+        <thead class="thead-dark">
             <tr>
                 <th>Obrázek</th>
                 <th>Model</th>
@@ -27,7 +29,7 @@
         <tbody>
             {% for prediction in object_list %}
                 <tr>
-                    <td><img src="{{ prediction.image_file.url }}" alt="Image" width="100"></td>
+                    <td><img src="{{ prediction.image_file.url }}" alt="Image" width="100" class="img-thumbnail"></td>
                     <td>{{ prediction.model_name }}</td>
                     <td>{{ prediction.predicted_class }}</td>
                     <td>{{ prediction.description }}</td>
@@ -40,6 +42,7 @@
             {% endfor %}
         </tbody>
     </table>
+</div>
 
     <!-- Include jQuery and jQuery UI -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

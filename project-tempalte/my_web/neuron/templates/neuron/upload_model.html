@@ -7,19 +7,17 @@
 
 {% block content %}
 <h1>Nahrát model</h1>
+<p class="lead">Prosím, nahrajte soubor svého předtrénovaného modelu neuronové sítě. Přijímané formáty jsou .h5. Po nahrání budete moci model používat pro klasifikaci obrázků.</p>
 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-
-        <div class="input-group mb-3">
-        <button class="btn btn-outline-secondary" id="inputGroupFileAddon03" type="submit">Nahrát</button>
-        {{ form.as_p }}
-        </div>
-
-
-        <br>
-        <a href="{% url 'upload_image' %}">Nahrát obrázek pro predikci</a>
-    </form>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="input-group mb-3">
+        <input type="file" class="form-control" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" aria-label="Upload" name="{{ form.model_file.name }}">
+        <button class="btn btn-outline-primary" id="inputGroupFileAddon01" type="submit">Nahrát</button>
+    </div>
+    {{ form.non_field_errors }}
+    {{ form.model_file.errors }}
+</form>
 
 {% endblock %}
 

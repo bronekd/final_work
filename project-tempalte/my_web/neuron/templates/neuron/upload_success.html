@@ -7,9 +7,17 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Nahrání úspěšné</h1>
-    <p>Model byl úspěšně nahrán: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
-    <a href="{% url 'upload_model' %}">Nahrát další model</a>
-    <a href="{% url 'upload_image' %}">Nahrát obrázek k predikci</a>
+<div class="container mt-5">
+    <h1 class="mb-3">Nahrání úspěšné</h1>
+    <p class="lead">Model byl úspěšně nahrán. Nyní můžete model použít k predikci nebo nahrát další. Přejděte na stránku Moje modely a použite poslední nahraný model</p>
+    <!--<p><a href="{{ uploaded_file_url }}" class="btn btn-info">Zobrazit nahraný model</a></p>-->
 
+    <div class="list-group">
+        <a href="{% url 'upload_model' %}" class="list-group-item list-group-item-action">Nahrát další model</a>
+        <a href="{% url 'user_models' %}" class="list-group-item list-group-item-action">Moje modely</a>
+        <a href="{% url 'image_predictions' %}" class="list-group-item list-group-item-action">Přehled predikcí</a>
+        <a href="{% url 'search_image_prediction' %}" class="list-group-item list-group-item-action">Pokročilé statistiky</a>
+
+    </div>
+</div>
 {% endblock %}
